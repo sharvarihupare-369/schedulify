@@ -1,4 +1,4 @@
-import type { Response } from "express";
+import type { Request,Response } from "express";
 import dotenv from "dotenv";
 dotenv.config();
 import bcrypt from "bcrypt";
@@ -10,6 +10,7 @@ import {
   LoginUserRequest,
   RegisterUserRequest,
 } from "../utils/types";
+import BlackListModel from "../models/BlackListModel";
 
 export const registerUser = async (
   req: RegisterUserRequest,
@@ -89,6 +90,27 @@ export const loginUser = async (
       message: "User LoggedIn Successfully...",
       data: { token, username: existingUser.name },
     });
+  } catch (error: any) {
+    res.status(500).send({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
+
+
+
+export const logoutUser = async (
+  req: Request,
+  res: Response<APIResponse>
+): Promise<void> => {
+  try{
+    const token = req?.headers["authorization"]?.split(" ")[1];
+    await BlackListModel.create({token});
+    res.status(200).send({success:true,message:"User Logged Out"})
+
+
   } catch (error: any) {
     res.status(500).send({
       success: false,

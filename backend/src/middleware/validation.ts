@@ -2,10 +2,10 @@ import Joi from "joi";
 
 export const validateRegister = Joi.object({
   name: Joi.string().min(3).max(50).required().messages({
-    "string.empty": "Name is required", // check for both value and field if any one is missing throws error
+    "string.empty": "Name is required", 
     "string.min": "Name must be at least 3 characters long.",
     "string.max": "Name must not exceed 50 characters.",
-    "any.required": "Name is required", // used to check only if field is present or not
+    "any.required": "Name is required",
   }),
   email: Joi.string()
     .email({ minDomainSegments: 2, tlds: { allow: ["com"] } })
