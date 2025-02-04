@@ -51,7 +51,7 @@ export const getTasks = async (
 ): Promise<void> => {
   try {
     const userId = req.userId;
-    const { priority } = req.query;
+    const { priority, status } = req.query;
     const filters: { userId: string; priority?: string, status?: string } = { userId };
     if (priority) filters.priority = priority as string;
     if (status) filters.status = status as string;
