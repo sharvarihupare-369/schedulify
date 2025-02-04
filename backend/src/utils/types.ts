@@ -3,7 +3,7 @@ import { Request } from "express";
 declare global {
   namespace Express {
     interface Request {
-      userId?: string;
+      userId: string;
     }
   }
 }
@@ -28,4 +28,18 @@ export interface LoginUserRequest extends Request {
     email: string;
     password: string;
   };
+}
+
+type StatusType = "To do" | "In Progress" | "Completed"
+type PriorityType = "High" | "Medium" | "Low"
+
+export interface TaskCreateRequest extends Request {
+  userId: string;
+  body: {
+    title:string;
+    description ?: string;
+    status: StatusType;
+    priority: PriorityType;
+    due_date: Date 
+  },
 }

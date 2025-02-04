@@ -4,6 +4,7 @@ import type { Request, Response } from "express";
 import cors from "cors";
 import connection from "./config/db";
 import userRouter from "./routes/userRoute";
+import taskRouter from "./routes/taskRoute"
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/user", userRouter);
+app.use("/task", taskRouter);
 
 app.listen(PORT, async () => {
   try {

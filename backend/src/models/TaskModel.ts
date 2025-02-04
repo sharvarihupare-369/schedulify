@@ -6,7 +6,7 @@ interface Task extends Document {
   description?: string;
   status: "To do" | "In Progress" | "Completed";
   priority: "High" | "Medium" | "Low";
-  due_date?: Date;
+  due_date: Date;
 }
 
 const taskSchema: Schema<Task> = new Schema(
@@ -36,9 +36,14 @@ const taskSchema: Schema<Task> = new Schema(
     },
     due_date: {
       type: Date,
+      required: true,
       default: Date.now,
       validate: {
-        validator: (value: Date) => value.getTime() >= Date.now(),
+        validator: (value: Date) => {
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+          return value.getTime() >= today.getTime();
+        },
         message: "Due date must be in future.",
       },
     },

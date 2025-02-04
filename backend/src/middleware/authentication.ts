@@ -1,4 +1,4 @@
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { Request, Response, NextFunction } from "express";
 import BlackListModel from "../models/BlackListModel";
@@ -22,10 +22,13 @@ const authentication = async (
       return;
     }
     const secretKey = process.env.secretKey || "";
-    const decoded = jwt.verify(token, secretKey) as JwtPayload & {
-      userId: string;
-    };
-    req.userId = decoded.userId;
+    const decoded = jwt.verify(token, secretKey) as jwt.JwtPayload;
+    if (!decoded.userId) {
+      res.status(400).send({ message: "Invalid token, user ID is missing." });
+      return;
+    }
+
+    req.userId = decoded.userId as string;
 
     next();
   } catch (error: any) {
