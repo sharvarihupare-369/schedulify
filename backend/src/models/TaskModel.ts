@@ -7,6 +7,7 @@ interface Task extends Document {
   status: "To do" | "In Progress" | "Completed";
   priority: "High" | "Medium" | "Low";
   due_date: Date;
+  deletedAt: Date;
 }
 
 const taskSchema: Schema<Task> = new Schema(
@@ -19,7 +20,6 @@ const taskSchema: Schema<Task> = new Schema(
     title: {
       type: String,
       required: true,
-      unique: true,
       minlength: 3,
       maxlength: 100,
     },
@@ -47,6 +47,7 @@ const taskSchema: Schema<Task> = new Schema(
         message: "Due date must be in future.",
       },
     },
+    deletedAt: { type: Date, default: null },
   },
   { timestamps: true }
 );
