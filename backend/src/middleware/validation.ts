@@ -43,8 +43,8 @@ export const validateTaskCreation = Joi.object({
     "any.required": "Title is required",
   }),
   description: Joi.string().min(10).max(500).optional().messages({
-    "string.min": "Title must be at least 10 characters long.",
-    "string.max": "Title must not exceed 500 characters.",
+    "string.min": "Description must be at least 10 characters long.",
+    "string.max": "Description must not exceed 500 characters.",
   }),
   status: Joi.string()
     .valid("To do", "In Progress", "Completed")
