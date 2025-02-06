@@ -48,17 +48,10 @@ export const validateTaskCreation = Joi.object({
   }),
   status: Joi.string()
     .valid("To do", "In Progress", "Completed")
-    .default("To do")
-    .messages({
-      "any.only":
-        "Status must be one of the following : To do ,In Progress, Completed",
-    }),
+    .default("To do"),
   priority: Joi.string()
     .valid("High", "Medium", "Low")
-    .default("Medium")
-    .messages({
-      "any.only": "Status must be one of the following : High , Medium, Low",
-    }),
+    .default("Medium"),
   due_date: Joi.date().min("now").required().messages({
     "date.min": "Due date must be greater than or equal to today",
     "any.required": "Due date is required",
