@@ -1,10 +1,19 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FaSearch } from "react-icons/fa";
-import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { AuthContext } from "../contexts/AuthContext";
 
-const Navbar = () => {
+const Navbar = ({ onCreateTaskClick }: any) => {
   const [inputVal, setInputVal] = useState<string>("");
+  const authContext = useContext(AuthContext);
+  if (!authContext) {
+    throw new Error("AuthContext must be used within an AuthProvider");
+  }
+  const { username } = authContext;
+  const capitalize = (str: string) => {
+    if (!str) return "";
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  };
   return (
     <>
       <nav
@@ -22,7 +31,13 @@ const Navbar = () => {
           <FaSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer" />
         </div>
         <div className="flex items-center gap-4">
-          <p>Name</p>
+          <button
+            className="flex items-center cursor-pointer bg-white text-blue-500 px-4 py-2 rounded-md hover:bg-gray-100"
+            onClick={onCreateTaskClick}
+          >
+            Create Task
+          </button>
+          <p>{capitalize(username || "")}</p>
           <img
             width={35}
             className="rounded-full border border-gray-200 cursor-pointer"
@@ -30,7 +45,6 @@ const Navbar = () => {
           />
         </div>
       </nav>
-      <ToastContainer autoClose={3000} />
     </>
   );
 };
