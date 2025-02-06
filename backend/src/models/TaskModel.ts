@@ -23,7 +23,7 @@ const taskSchema: Schema<Task> = new Schema(
       minlength: 3,
       maxlength: 100,
     },
-    description: { type: String, minlength: 10, maxlength: 500 },
+    description: { type: String },
     status: {
       type: String,
       enum: ["To do", "In Progress", "Completed"],

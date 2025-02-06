@@ -42,7 +42,7 @@ export const validateLogin = Joi.object({
       "string.max": "Title must not exceed 100 characters.",
       "any.required": "Title is required",
     }),
-    description: Joi.string().min(10).max(500).allow("").optional().messages({
+    description: Joi.string().allow("").optional().messages({
       "string.min": "Description must be at least 10 characters long.",
       "string.max": "Description must not exceed 500 characters.",
     }),
