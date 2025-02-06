@@ -33,27 +33,27 @@ export const validateLogin = Joi.object({
   password: Joi.string().required(),
 });
 
-export const validateTaskCreation = Joi.object({
-  userId: Joi.string()
-    .pattern(/^[0-9a-fA-F]{24}$/, "ObjectId"),
-  title: Joi.string().min(3).max(100).required().messages({
-    "string.empty": "Title is required",
-    "string.min": "Title must be at least 3 characters long.",
-    "string.max": "Title must not exceed 100 characters.",
-    "any.required": "Title is required",
-  }),
-  description: Joi.string().min(10).max(500).optional().messages({
-    "string.min": "Description must be at least 10 characters long.",
-    "string.max": "Description must not exceed 500 characters.",
-  }),
-  status: Joi.string()
-    .valid("To do", "In Progress", "Completed")
-    .default("To do"),
-  priority: Joi.string()
-    .valid("High", "Medium", "Low")
-    .default("Medium"),
-  due_date: Joi.date().min("now").required().messages({
-    "date.min": "Due date must be greater than or equal to today",
-    "any.required": "Due date is required",
-  }),
-});
+  export const validateTaskCreation = Joi.object({
+    userId: Joi.string()
+      .pattern(/^[0-9a-fA-F]{24}$/, "ObjectId"),
+    title: Joi.string().min(3).max(100).required().messages({
+      "string.empty": "Title is required",
+      "string.min": "Title must be at least 3 characters long.",
+      "string.max": "Title must not exceed 100 characters.",
+      "any.required": "Title is required",
+    }),
+    description: Joi.string().min(10).max(500).allow("").optional().messages({
+      "string.min": "Description must be at least 10 characters long.",
+      "string.max": "Description must not exceed 500 characters.",
+    }),
+    status: Joi.string()
+      .valid("To do", "In Progress", "Completed")
+      .default("To do"),
+    priority: Joi.string()
+      .valid("High", "Medium", "Low")
+      .default("Medium"),
+    due_date: Joi.date().min("now").required().messages({
+      "date.min": "Due date must be greater than or equal to today",
+      "any.required": "Due date is required",
+    }),
+  });
