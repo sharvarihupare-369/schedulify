@@ -1,10 +1,19 @@
-import { useContext, useState } from "react";
-import { FaSearch } from "react-icons/fa";
+import { useContext, useEffect, useRef, useState } from "react";
+import { FaSearch, FaSignOutAlt } from "react-icons/fa";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from "../contexts/AuthContext";
+import { logoutUser } from "../api/auth";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
-const Navbar = ({ onCreateTaskClick }: any) => {
+const Navbar = ({ onCreateTaskClick, handleSearch }: any) => {
   const [inputVal, setInputVal] = useState<string>("");
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const token = localStorage.getItem("token") || "";
+  const navigate = useNavigate();
+
   const authContext = useContext(AuthContext);
   if (!authContext) {
     throw new Error("AuthContext must be used within an AuthProvider");
@@ -13,6 +22,41 @@ const Navbar = ({ onCreateTaskClick }: any) => {
   const capitalize = (str: string) => {
     if (!str) return "";
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  };
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    const debounceId = setTimeout(() => {
+      handleSearch(inputVal);
+    }, 1000);
+    return () => {
+      clearTimeout(debounceId);
+    };
+  }, [inputVal, handleSearch]);
+  const handleLogout = async () => {
+    const response = await logoutUser(token);
+    console.log(response, "response");
+    if (response.success) {
+      toast.success(response.message);
+      localStorage.removeItem("token");
+      localStorage.removeItem("username");
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000);
+    }
   };
   return (
     <>
@@ -37,14 +81,32 @@ const Navbar = ({ onCreateTaskClick }: any) => {
           >
             Create Task
           </button>
-          <p>{capitalize(username || "")}</p>
+          {/* <p>{capitalize(username || "")}</p> */}
           <img
             width={35}
             className="rounded-full border border-gray-200 cursor-pointer"
             src="https://img.freepik.com/free-photo/user-front-side-with-white-background_187299-40007.jpg?t=st=1738768635~exp=1738772235~hmac=d299c5ffb317cf6ff31d279797cc19c933df272d8fafb524a37e7b414c3b7d5c&w=740"
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           />
+          {isDropdownOpen && (
+            <div className="absolute right-3 top-11 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg transition-all duration-200 transform translate-y-2 opacity-100">
+              <div className="p-3">
+                <p className="text-gray-800 font-semibold">
+                  Hi {capitalize(username || "")}
+                </p>
+              </div>
+              <hr />
+              <button
+                onClick={handleLogout}
+                className="w-full flex items-center gap-2 text-left px-4 py-2 text-gray-700 hover:bg-gray-100 transition cursor-pointer"
+              >
+                <FaSignOutAlt /> Logout
+              </button>
+            </div>
+          )}
         </div>
       </nav>
+      <ToastContainer autoClose={3000} />
     </>
   );
 };

@@ -4,8 +4,10 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { RegisterUserPayload } from "../utils/types";
 import { registerUser } from "../api/auth";
+import Loader from "../components/Loader";
 
 const Signup = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -14,6 +16,7 @@ const Signup = () => {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     const userData: RegisterUserPayload = { name, email, password };
+    setIsLoading(true);
     try {
       const response = await registerUser(userData);
       if (response.success) {
@@ -30,14 +33,17 @@ const Signup = () => {
     } catch (error: any) {
       toast.error(error);
       console.error("Error registering user:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
+ 
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    isLoading ? <Loader/> : <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8">
         <h2 className="text-2xl font-bold text-gray-800 text-center">
-          Sign Up
+          Sign Up 
         </h2>
         <form className="mt-6" onSubmit={handleRegister}>
           <div className="mb-4">

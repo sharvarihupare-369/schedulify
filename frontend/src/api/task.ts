@@ -1,7 +1,5 @@
 import axios from "axios";
-// import axiosInstance from "../utils/axiosInstance";
-// const BASE_URL = "https://schedulify-cgr9.onrender.com";
-const BASE_URL = "http://localhost:8080";
+const BASE_URL = process.env.REACT_APP_BASE_URL
 
 // export const fetchAllTasks = async() => {
 //     try {
@@ -29,10 +27,26 @@ export const fetchAllTasks = async (token: string) => {
 
 export const createTask = async (taskData:any,token: string) => {
   try {
-    let res = await axios.post(`${BASE_URL}/task/create/`,taskData, {
+    let res = await axios.post(`${BASE_URL}/task/create`,{...taskData}, {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
+      },
+    });
+    console.log(res)
+    return res.data;
+  } catch (error:any) {
+    console.log(error);
+    return error.response.data.message
+  }
+};
+
+
+export const deleteTask = async (id:string,token: string) => {
+  try {
+    let res = await axios.delete(`${BASE_URL}/task/delete/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
     });
     return res.data;
@@ -42,10 +56,12 @@ export const createTask = async (taskData:any,token: string) => {
   }
 };
 
-export const deleteTask = async (id:string,token: string) => {
+
+export const editTask = async (id:string,token: string, updatedTask:any) => {
   try {
-    let res = await axios.delete(`${BASE_URL}/task/${id}`, {
+    let res = await axios.put(`${BASE_URL}/task/${id}`,updatedTask, {
       headers: {
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     });
@@ -55,3 +71,4 @@ export const deleteTask = async (id:string,token: string) => {
     return error.response.data.message
   }
 };
+

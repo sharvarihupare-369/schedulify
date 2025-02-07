@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { TaskFormProps } from "../utils/types";
 import { createTask } from "../api/task";
+import { RxCross2 } from "react-icons/rx";
 
 const TaskForm: React.FC<TaskFormProps> = ({ onClose, onTaskCreated }) => {
   const [title, setTitle] = useState("");
@@ -28,7 +29,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ onClose, onTaskCreated }) => {
     }
 
     const response = await createTask(newTask, token);
-    console.log(response,"response")
+    console.log(response, "response");
     if (response.success) {
       toast.success("Task created successfully!");
       onTaskCreated(response.data);
@@ -41,7 +42,10 @@ const TaskForm: React.FC<TaskFormProps> = ({ onClose, onTaskCreated }) => {
   return (
     <div className="fixed inset-0 bg-white/30 backdrop-blur-sm bg-opacity-50 flex justify-center items-center">
       <div className="bg-white p-6 rounded-md shadow-md w-96">
-        <h2 className="text-xl font-bold mb-4">Create Task</h2>
+        <div className="mb-4 flex  justify-between items-center">
+          <h2 className="text-xl font-bold ">Create Task</h2>
+          <RxCross2 onClick={onClose} style={{ cursor: "pointer" }} size={23} />
+        </div>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className=" text-sm font-medium text-gray-700">Title</label>
@@ -116,7 +120,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ onClose, onTaskCreated }) => {
           Cancel
         </button>
       </div>
-      <ToastContainer autoClose={2000}/>
+      <ToastContainer autoClose={2000} />
     </div>
   );
 };

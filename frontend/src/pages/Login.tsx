@@ -5,8 +5,10 @@ import "react-toastify/dist/ReactToastify.css";
 import { LoginUserPayload } from "../utils/types";
 import { loginUser } from "../api/auth";
 import { AuthContext } from "../contexts/AuthContext";
+import Loader from "../components/Loader";
 
 const Login = () => {
+  const [isLoading,setIsLoading] = useState<boolean>(false)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -21,9 +23,11 @@ const Login = () => {
     e.preventDefault();
     const userData: LoginUserPayload = { email, password };
 
+    setIsLoading(true)
     try {
       const response = await loginUser(userData);
       // console.log(response, "response in handlLogin");
+      console.log(response)
       if (response.success) {
         toast.success(response.message);
         setToken(response.data.token);
@@ -41,11 +45,13 @@ const Login = () => {
     } catch (error: any) {
       toast.error(error);
       console.error("Error registering user:", error);
+    }finally{
+      setIsLoading(false)
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+   isLoading ? <Loader/> : <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8">
         <h2 className="text-2xl font-bold text-gray-800 text-center">Login</h2>
         <form className="mt-6" onSubmit={handleLogin}>
