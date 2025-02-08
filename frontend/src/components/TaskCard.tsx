@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   FaCalendarAlt,
   FaEdit,
@@ -20,6 +20,7 @@ const TaskCard: React.FC<TaskCardProps> = ({
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [taskToDelete, setTaskToDelete] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState<boolean>(false);
+  const modalRef = useRef<HTMLDivElement>(null);
   const priorityColors: Record<string, string> = {
     High: "bg-red-500",
     Medium: "bg-yellow-500",
@@ -33,6 +34,25 @@ const TaskCard: React.FC<TaskCardProps> = ({
   };
 
   const token = localStorage.getItem("token") || "";
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
+        setIsModalOpen(false);
+      }
+    };
+
+    if (isModalOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isModalOpen]);
   const handleDelete = async (id: string) => {
     try {
       if (taskToDelete) {
@@ -69,7 +89,6 @@ const TaskCard: React.FC<TaskCardProps> = ({
       ) : (
         // <div className="bg-white shadow-md rounded-lg p-6 flex flex-col gap-4 transition-all hover:shadow-lg">
         <div className="bg-white shadow-md rounded-lg p-6 flex flex-col gap-4 transition-all hover:shadow-lg flex-grow-0 h-auto min-h-[200px]">
-
           <div className="flex justify-between items-center">
             <h3
               id={`task-title-${task._id}`}

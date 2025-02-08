@@ -39,3 +39,8 @@ A search bar is included to help users quickly find specific tasks by title or d
 
 The task creation page provides a simple form where users can add new tasks with a title, description, due date, priority, and status.
 ![createTask](frontend/src/assets/createtask.png)
+
+
+![DeleteAlert](frontend/src/assets/deletemodal.png)
+
+

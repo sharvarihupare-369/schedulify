@@ -66,9 +66,6 @@ const TaskForm: React.FC<TaskFormProps> = ({
       console.log(error);
     }
   };
-  // if (response.success) {
-  // toast.success("Task created successfully!");
-  // };
 
   return (
     <>
