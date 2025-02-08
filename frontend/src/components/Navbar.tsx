@@ -1,13 +1,17 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { FaSearch, FaSignOutAlt } from "react-icons/fa";
-import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from "../contexts/AuthContext";
 import { logoutUser } from "../api/auth";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { CiSquarePlus } from "react-icons/ci";
 
-const Navbar = ({ onCreateTaskClick, handleSearch }: any) => {
+const Navbar = ({
+  onCreateTaskClick,
+  handleSearch,
+
+}: any) => {
   const [inputVal, setInputVal] = useState<string>("");
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -48,7 +52,6 @@ const Navbar = ({ onCreateTaskClick, handleSearch }: any) => {
   }, [inputVal, handleSearch]);
   const handleLogout = async () => {
     const response = await logoutUser(token);
-    console.log(response, "response");
     if (response.success) {
       toast.success(response.message);
       localStorage.removeItem("token");
@@ -75,13 +78,20 @@ const Navbar = ({ onCreateTaskClick, handleSearch }: any) => {
           <FaSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer" />
         </div>
         <div className="flex items-center gap-4">
-          <button
-            className="flex items-center cursor-pointer bg-white text-blue-500 px-4 py-2 rounded-md hover:bg-gray-100"
-            onClick={onCreateTaskClick}
-          >
-            Create Task
-          </button>
-          {/* <p>{capitalize(username || "")}</p> */}
+          {window.innerWidth < 500 ? (
+            <CiSquarePlus
+              style={{ cursor: "pointer" }}
+              onClick={onCreateTaskClick}
+              size={40}
+            />
+          ) : (
+            <button
+              className="flex items-center cursor-pointer bg-white text-blue-500 px-4 py-2 rounded-md hover:bg-gray-100"
+              onClick={onCreateTaskClick}
+            >
+              Create Task
+            </button>
+          )}
           <img
             width={35}
             className="rounded-full border border-gray-200 cursor-pointer"

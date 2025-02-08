@@ -1,6 +1,7 @@
 import axios from "axios";
 import { LoginUserPayload, RegisterUserPayload } from "../utils/types";
-const BASE_URL = process.env.REACT_APP_BASE_URL;
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 
 export const registerUser = async (userData: RegisterUserPayload) => {
   try {

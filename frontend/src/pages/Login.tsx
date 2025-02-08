@@ -26,8 +26,6 @@ const Login = () => {
     setIsLoading(true)
     try {
       const response = await loginUser(userData);
-      // console.log(response, "response in handlLogin");
-      console.log(response)
       if (response.success) {
         toast.success(response.message);
         setToken(response.data.token);
@@ -81,7 +79,7 @@ const Login = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
+            className="w-full bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300 cursor-pointer"
           >
             Login
           </button>

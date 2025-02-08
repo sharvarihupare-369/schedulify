@@ -1,6 +1,6 @@
 import Navbar from "../components/Navbar";
 import Dashboard from "../components/Dashboard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TaskForm from "../components/TaskForm";
 import { TaskP } from "../utils/types";
 
@@ -8,11 +8,18 @@ const Home = () => {
   const [tasks, setTasks] = useState<TaskP[]>([]);
   const [filteredTasks, setFilteredTasks] = useState<TaskP[]>(tasks);
   const [showTaskForm, setShowTaskForm] = useState<boolean>(false);
+  const [priority, setPriority] = useState<string>("");
+  const [status, setStatus] = useState<string>("");
 
+  useEffect(()=>{
+    setFilteredTasks(tasks)
+  },[tasks])
   const handleTaskCreated = (newTask: TaskP) => {
-    setTasks((prevTasks: any) => [newTask, ...prevTasks]);
-    setFilteredTasks((pre: any) => [newTask, ...pre]);
+    setTasks((prevTasks: TaskP[]) => [...prevTasks,newTask]);
+    setFilteredTasks((pre: TaskP[]) => [...pre,newTask]);
     setShowTaskForm(false);
+    setPriority("");
+    setStatus("")
   };
 
   const handleTaskDelete = (taskId: string) => {
@@ -33,6 +40,10 @@ const Home = () => {
         setTasks={setTasks}
         onCreateTaskClick={() => setShowTaskForm(true)}
         handleSearch={handleSearch}
+        setPriority={setPriority}
+        priority={priority}
+        setStatus={setStatus}
+        status={status}
       />
       {showTaskForm && (
         <TaskForm
@@ -42,9 +53,13 @@ const Home = () => {
       )}
       <Dashboard
         // tasks={tasks}
+        setPriority={setPriority}
+        priority={priority}
         tasks={filteredTasks}
         setTasks={setTasks}
         onTaskDelete={handleTaskDelete}
+        setStatus={setStatus}
+        status={status}
       />
     </div>
   );

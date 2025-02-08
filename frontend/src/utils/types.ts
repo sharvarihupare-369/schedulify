@@ -40,17 +40,22 @@ export interface Task {
   deletedAt?: string | null;
 }
 
-
 export interface TaskCardProps {
   task: Task;
   setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
-  onTaskDelete: (id: string) => void; 
+  onTaskDelete: (id: string) => void;
 }
 
 export interface TaskFormProps {
-  onClose: () => void;
-  onTaskCreated: (task: any) => void;
+  onClose?: () => void;
+  onCancel?: () => void;
+  onTaskCreated?: (task: any) => void;
+  initialTaskData?: any
+  onSubmit?: (task: any) => void;
+  isEditing?:boolean
 }
+
+
 
 export interface TaskP {
   _id: string;
@@ -68,5 +73,9 @@ export interface TaskP {
 export interface DashboardTask {
   tasks: TaskP[];
   setTasks: React.Dispatch<React.SetStateAction<TaskP[]>>;
-  onTaskDelete: (id: string) => void; 
+  onTaskDelete: (id: string) => void;
+  priority?: string;
+  status?:string;
+  setPriority?: React.Dispatch<React.SetStateAction<string>> ;
+  setStatus?: React.Dispatch<React.SetStateAction<string>>;
 }
