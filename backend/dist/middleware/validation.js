@@ -45,22 +45,16 @@ exports.validateTaskCreation = joi_1.default.object({
         "string.max": "Title must not exceed 100 characters.",
         "any.required": "Title is required",
     }),
-    description: joi_1.default.string().min(10).max(500).optional().messages({
-        "string.min": "Title must be at least 10 characters long.",
-        "string.max": "Title must not exceed 500 characters.",
+    description: joi_1.default.string().allow("").optional().messages({
+        "string.min": "Description must be at least 10 characters long.",
+        "string.max": "Description must not exceed 500 characters.",
     }),
     status: joi_1.default.string()
         .valid("To do", "In Progress", "Completed")
-        .default("To do")
-        .messages({
-        "any.only": "Status must be one of the following : To do ,In Progress, Completed",
-    }),
+        .default("To do"),
     priority: joi_1.default.string()
         .valid("High", "Medium", "Low")
-        .default("Medium")
-        .messages({
-        "any.only": "Status must be one of the following : High , Medium, Low",
-    }),
+        .default("Medium"),
     due_date: joi_1.default.date().min("now").required().messages({
         "date.min": "Due date must be greater than or equal to today",
         "any.required": "Due date is required",

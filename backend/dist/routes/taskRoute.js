@@ -10,6 +10,7 @@ const router = express_1.default.Router();
 router.post("/create", authentication_1.default, TaskController_1.createTask);
 router.get("/", authentication_1.default, TaskController_1.getTasks);
 router.put("/:id", authentication_1.default, TaskController_1.updateTask);
-router.delete("/:id", authentication_1.default, TaskController_1.deleteTask);
+router.delete("/:id", authentication_1.default, TaskController_1.softDeleteTask);
+router.delete("/delete/:id", authentication_1.default, TaskController_1.deleteTask);
 exports.default = router;
 //# sourceMappingURL=taskRoute.js.map

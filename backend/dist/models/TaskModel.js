@@ -43,11 +43,10 @@ const taskSchema = new mongoose_1.Schema({
     title: {
         type: String,
         required: true,
-        unique: true,
         minlength: 3,
         maxlength: 100,
     },
-    description: { type: String, minlength: 10, maxlength: 500 },
+    description: { type: String },
     status: {
         type: String,
         enum: ["To do", "In Progress", "Completed"],
@@ -71,6 +70,7 @@ const taskSchema = new mongoose_1.Schema({
             message: "Due date must be in future.",
         },
     },
+    deletedAt: { type: Date, default: null },
 }, { timestamps: true });
 const TaskModel = mongoose_1.default.model("task", taskSchema);
 exports.default = TaskModel;
